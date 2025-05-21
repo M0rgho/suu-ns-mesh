@@ -7,6 +7,8 @@ This project demonstrates a simple food delivery system using three microservice
 
 ## Architecture
 
+![architecture](images/image.png "Microservice architecture")
+
 The services are designed to run in separate Kubernetes namespaces and communicate through NS Mesh (Network Service Mesh).
 
 ### Services
@@ -45,5 +47,3 @@ npm run start
 ```
 
 ## Kubernetes Deployment
-
-TODO
