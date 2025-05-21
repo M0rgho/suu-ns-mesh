@@ -47,3 +47,14 @@ npm run start
 ```
 
 ## Kubernetes Deployment
+
+Create microservice images 
+```bash
+docker build -f services/Dockerfile -t delivery-service:latest ./services/delivery
+
+docker build -f services/Dockerfile -t restaurant-service:latest ./services/restaurant
+
+docker build -f services/Dockerfile -t orders-service:latest ./services/orders
+```
+
+Kubernetes TODO
