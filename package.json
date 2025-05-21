@@ -1,0 +1,25 @@
+{
+  "name": "ns-mesh-demo",
+  "version": "1.0.0",
+  "description": "Microservices demo with NS Mesh",
+  "private": true,
+  "workspaces": [
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "start": "npm run build && concurrently \"npm run start:restaurant\" \"npm run start:orders\" \"npm run start:delivery\"",
+    "start:restaurant": "npm start --workspace=services/restaurant",
+    "start:orders": "npm start --workspace=services/orders", 
+    "start:delivery": "npm start --workspace=services/delivery",
+    "dev": "concurrently \"npm run dev:restaurant\" \"npm run dev:orders\" \"npm run dev:delivery\"",
+    "dev:restaurant": "npm run dev --workspace=services/restaurant",
+    "dev:orders": "npm run dev --workspace=services/orders",
+    "dev:delivery": "npm run dev --workspace=services/delivery"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.3.3",
+    "@types/node": "^20.10.5"
+  }
+}
