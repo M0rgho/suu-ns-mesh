@@ -11,8 +11,6 @@
     "declaration": true,
     "resolveJsonModule": true
   },
-  "include": [
-    "services/**/*.ts"
-  ],
+  "include": ["services/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
