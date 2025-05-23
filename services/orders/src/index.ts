@@ -1,24 +1,14 @@
-import express, { NextFunction, Request, Response } from "express";
-import cors from "cors";
-import dotenv from "dotenv";
-import { v4 as uuidv4 } from "uuid";
-import axios, { AxiosError } from "axios";
-
-dotenv.config();
+import express, { NextFunction, Request, Response } from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { v4 as uuidv4 } from 'uuid';
+import axios, { AxiosError } from 'axios';
+import { config } from './config';
 
 const app = express();
-const port = process.env.PORT || 3002;
+const port = config.port;
 
-// Service URLs with fallbacks for local development
-const RESTAURANT_SERVICE_URL =
-  process.env.RESTAURANT_SERVICE_URL || "http://localhost:3001";
-
-const jsonErrorHandler = (
-  err: any,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const jsonErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send({ error: err });
 };
 
@@ -33,7 +23,7 @@ interface OrderItem {
 interface Order {
   id: string;
   items: OrderItem[];
-  status: "created" | "preparing" | "ready" | "delivering" | "delivered";
+  status: 'created' | 'preparing' | 'ready' | 'delivering' | 'delivered';
   createdAt: Date;
 }
 
@@ -41,18 +31,18 @@ interface Order {
 const orders: { [key: string]: Order } = {};
 
 // Create new order
-app.post("/api/orders", async (req: Request, res: Response) => {
+app.post('/api/orders', async (req: Request, res: Response) => {
   const { items } = req.body as { items: OrderItem[] };
 
   if (!items || !Array.isArray(items)) {
-    return res.status(400).json({ error: "Invalid order items" });
+    return res.status(400).json({ error: 'Invalid order items' });
   }
 
   const orderId = uuidv4().slice(0, 8);
   const order: Order = {
     id: orderId,
     items,
-    status: "created",
+    status: 'created',
     createdAt: new Date(),
   };
 
@@ -60,49 +50,45 @@ app.post("/api/orders", async (req: Request, res: Response) => {
 
   try {
     // Notify restaurant service to prepare the order
-    await axios.post(`${RESTAURANT_SERVICE_URL}/api/restaurant/prepare-order`, {
+    await axios.post(`${config.restaurantServiceUrl}/api/restaurant/prepare-order`, {
       orderId,
       items,
     });
 
-    order.status = "preparing";
+    order.status = 'preparing';
     res.status(201).json(order);
   } catch (error: any) {
-    console.error("Error notifying restaurant service:", error);
-    res
-      .status(500)
-      .json({ error: "Failed to process order: " + error.response.data.error });
+    console.error('Error notifying restaurant service:', error);
+    res.status(500).json({ error: 'Failed to process order: ' + error.response.data.error });
   }
 });
 
 // Get order by ID
-app.get("/api/orders/:orderId", async (req: Request, res: Response) => {
+app.get('/api/orders/:orderId', async (req: Request, res: Response) => {
   const { orderId } = req.params;
   const order = orders[orderId];
 
   if (!order) {
-    return res.status(404).json({ error: "Order not found" });
+    return res.status(404).json({ error: 'Order not found' });
   }
 
   try {
     // Get current status from restaurant service
-    const restaurantStatus = await axios.get(
-      `${RESTAURANT_SERVICE_URL}/api/restaurant/status/${orderId}`
-    );
+    const restaurantStatus = await axios.get(`${config.restaurantServiceUrl}/api/restaurant/status/${orderId}`);
 
     // Update order status based on restaurant status
-    if (restaurantStatus.data.status === "ready") {
-      order.status = "ready";
+    if (restaurantStatus.data.status === 'ready') {
+      order.status = 'ready';
     }
 
     res.json(order);
   } catch (error) {
-    console.error("Error fetching order status:", error);
+    console.error('Error fetching order status:', error);
     res.json(order); // Return order with last known status
   }
 });
 
 app.listen(port, () => {
   console.log(`Orders service listening on port ${port}`);
-  console.log(`Using restaurant service at: ${RESTAURANT_SERVICE_URL}`);
+  console.log(`Using restaurant service at: ${config.restaurantServiceUrl}`);
 });

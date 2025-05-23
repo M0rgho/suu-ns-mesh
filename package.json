@@ -8,9 +8,10 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces",
+    "format": "prettier --write \"**/*.{js,ts,json,md}\"",
     "start": "npm run build && concurrently \"npm run start:restaurant\" \"npm run start:orders\" \"npm run start:delivery\"",
     "start:restaurant": "npm start --workspace=services/restaurant",
-    "start:orders": "npm start --workspace=services/orders", 
+    "start:orders": "npm start --workspace=services/orders",
     "start:delivery": "npm start --workspace=services/delivery",
     "dev": "concurrently \"npm run dev:restaurant\" \"npm run dev:orders\" \"npm run dev:delivery\"",
     "dev:restaurant": "npm run dev --workspace=services/restaurant",
