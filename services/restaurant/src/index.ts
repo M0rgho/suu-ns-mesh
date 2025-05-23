@@ -10,6 +10,8 @@ const jsonErrorHandler = (err: any, req: Request, res: Response, next: NextFunct
 const app = express();
 const port = config.port;
 
+import './tracing';
+
 app.use(cors());
 app.use(express.json());
 app.use(jsonErrorHandler);

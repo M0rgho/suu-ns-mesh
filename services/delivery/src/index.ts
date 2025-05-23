@@ -6,6 +6,8 @@ import { config } from './config';
 const app = express();
 const port = config.port;
 
+import './tracing';
+
 // Service URLs with fallbacks for local development
 
 const jsonErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {

@@ -8,6 +8,8 @@ import { config } from './config';
 const app = express();
 const port = config.port;
 
+import './tracing';
+
 const jsonErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).send({ error: err });
 };
