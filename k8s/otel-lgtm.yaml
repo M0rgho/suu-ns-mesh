@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-lgtm
+  namespace: otel-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: otel-lgtm
+  template:
+    metadata:
+      labels:
+        app: otel-lgtm
+    spec:
+      containers:
+        - name: otel-lgtm
+          image: grafana/otel-lgtm:latest
+          ports:
+            - containerPort: 3000
+              name: http
+            - containerPort: 4317
+              name: grpc
+            - containerPort: 4318
+              name: http-metrics
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-lgtm-external
+  namespace: otel-ns
+spec:
+  selector:
+    app: otel-lgtm
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: otel-lgtm-internal
+  namespace: otel-ns
+spec:
+  selector:
+    app: otel-lgtm
+  ports:
+    - name: grpc
+      port: 4317
+      targetPort: 4317
+    - name: http-metrics
+      port: 4318
+      targetPort: 4318
+  type: ClusterIP

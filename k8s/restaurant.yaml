@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restaurant-service
+  # namespace: restaurant-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restaurant-service
+  template:
+    metadata:
+      labels:
+        app: restaurant-service
+    spec:
+      containers:
+        - name: restaurant-service
+          image: restaurant-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: shared-service-config
+          env:
+            - name: SERVICE_PORT
+              value: '3000'
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: restaurant-service
+  # namespace: restaurant-ns
+spec:
+  selector:
+    app: restaurant-service
+  ports:
+    - port: 3000
+      targetPort: 3000
+  type: ClusterIP

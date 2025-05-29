@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: shared-service-config
+  # namespace: shared-ns
+data:
+  ORDERS_SERVICE_URL: 'http://orders-service:3000'
+  RESTAURANT_SERVICE_URL: 'http://restaurant-service:3000'
+  DELIVERY_SERVICE_URL: 'http://delivery-service:3000'
+  TRACES_URL: 'http://otel-lgtm-internal.otel-ns.svc.cluster.local:4317'
+  METRICS_URL: 'http://otel-lgtm-internal.otel-ns.svc.cluster.local:4317'
+  LOGS_URL: 'http://otel-lgtm-internal.otel-ns.svc.cluster.local:4317'
+  # ORDERS_SERVICE_URL: 'http://orders-service.orders-ns.svc.cluster.local:3000'
+  # RESTAURANT_SERVICE_URL: 'http://restaurant-service.restaurant-ns.svc.cluster.local:3000'
+  # DELIVERY_SERVICE_URL: 'http://delivery-service.delivery-ns.svc.cluster.local:3000'
