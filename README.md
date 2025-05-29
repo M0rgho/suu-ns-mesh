@@ -52,19 +52,38 @@ npm install
 npm run start
 ```
 
-## Kubernetes Deployment
+## Containerized Deployment
 
-Create microservice images
+### Docker Images
+
+Create microservice images:
 
 ```bash
-docker build -f services/Dockerfile -t delivery-service:latest ./services/delivery
+# Build restaurant service
+docker build -f services/Dockerfile -t restaurant-service:latest --build-arg SERVICE=restaurant .
 
-docker build -f services/Dockerfile -t restaurant-service:latest ./services/restaurant
+# Build orders service
+docker build -f services/Dockerfile -t orders-service:latest  --build-arg SERVICE=orders .
 
-docker build -f services/Dockerfile -t orders-service:latest ./services/orders
+# Build delivery service
+docker build -f services/Dockerfile -t delivery-service:latest  --build-arg SERVICE=delivery .
 ```
 
-Kubernetes TODO
+To run a service:
+```bash
+# Run restaurant service
+docker run -p 3001:3001 --env-file .env.docker-local restaurant-service:latest 
+
+# Run orders service
+docker run -p 3002:3002 --env-file .env.docker-local orders-service:latest
+
+# Run delivery service
+docker run -p 3003:3003 --env-file .env.docker-local delivery-service:latest
+```
+
+### Kubernetes
+TODO
+
 
 ## OTLP Monitoring
 
