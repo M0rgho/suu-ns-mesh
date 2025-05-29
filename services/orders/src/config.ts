@@ -5,7 +5,7 @@ dotenv.config();
 export const config = {
   serviceName: 'orders-service',
   serviceVersion: '1.0.0',
-  port: process.env.PORT || 3002,
+  port: process.env.SERVICE_PORT || 3002,
 
   ordersServiceUrl: process.env.ORDERS_SERVICE_URL || 'http://localhost:3002',
   restaurantServiceUrl: process.env.RESTAURANT_SERVICE_URL || 'http://localhost:3001',
