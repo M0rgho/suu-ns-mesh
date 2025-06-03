@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: delivery-service
-  # namespace: delivery-ns
+  namespace: delivery-ns
 spec:
   replicas: 1
   selector:
@@ -12,6 +12,8 @@ spec:
     metadata:
       labels:
         app: delivery-service
+      annotations:
+        networkservicemesh.io/name: 'delivery-service-ns'
     spec:
       containers:
         - name: delivery-service
@@ -25,13 +27,17 @@ spec:
           env:
             - name: SERVICE_PORT
               value: '3000'
+            - name: NSM_NETWORK_SERVICES
+              value: 'delivery-service-ns'
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: delivery-service
-  # namespace: delivery-ns
+  namespace: delivery-ns
+  annotations:
+    networkservicemesh.io/name: 'delivery-service-ns'
 spec:
   selector:
     app: delivery-service

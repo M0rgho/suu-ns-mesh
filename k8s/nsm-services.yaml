@@ -1,0 +1,60 @@
+---
+# Network Service Endpoint for Restaurant Service
+apiVersion: networkservicemesh.io/v1
+kind: NetworkService
+metadata:
+  name: restaurant-service-ns
+  namespace: restaurant-ns
+spec:
+  payload: IP
+---
+apiVersion: networkservicemesh.io/v1
+kind: NetworkServiceEndpoint
+metadata:
+  name: restaurant-endpoint
+  namespace: restaurant-ns
+  labels:
+    app: restaurant-service
+spec:
+  networkServiceNames:
+    - restaurant-service-ns
+---
+# Network Service Endpoint for Orders Service
+apiVersion: networkservicemesh.io/v1
+kind: NetworkService
+metadata:
+  name: orders-service-ns
+  namespace: orders-ns
+spec:
+  payload: IP
+---
+apiVersion: networkservicemesh.io/v1
+kind: NetworkServiceEndpoint
+metadata:
+  name: orders-endpoint
+  namespace: orders-ns
+  labels:
+    app: orders-service
+spec:
+  networkServiceNames:
+    - orders-service-ns
+---
+# Network Service Endpoint for Delivery Service
+apiVersion: networkservicemesh.io/v1
+kind: NetworkService
+metadata:
+  name: delivery-service-ns
+  namespace: delivery-ns
+spec:
+  payload: IP
+---
+apiVersion: networkservicemesh.io/v1
+kind: NetworkServiceEndpoint
+metadata:
+  name: delivery-endpoint
+  namespace: delivery-ns
+  labels:
+    app: delivery-service
+spec:
+  networkServiceNames:
+    - delivery-service-ns

@@ -1,0 +1,24 @@
+---
+# Network Service Client for Orders Service to connect to Restaurant Service
+apiVersion: networkservicemesh.io/v1
+kind: NetworkServiceClient
+metadata:
+  name: orders-to-restaurant-nsc
+  namespace: orders-ns
+spec:
+  networkServiceName: restaurant-service-ns
+  selector:
+    matchLabels:
+      app: orders-service
+---
+# Network Service Client for Restaurant Service to connect to Delivery Service
+apiVersion: networkservicemesh.io/v1
+kind: NetworkServiceClient
+metadata:
+  name: restaurant-to-delivery-nsc
+  namespace: restaurant-ns
+spec:
+  networkServiceName: delivery-service-ns
+  selector:
+    matchLabels:
+      app: restaurant-service

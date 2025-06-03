@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: orders-service
-  # namespace: orders-ns
+  namespace: orders-ns
 spec:
   replicas: 1
   selector:
@@ -12,6 +12,9 @@ spec:
     metadata:
       labels:
         app: orders-service
+      annotations:
+        networkservicemesh.io/name: 'orders-service-ns'
+        networkservicemesh.io/clients: 'restaurant-service-ns'
     spec:
       containers:
         - name: orders-service
@@ -25,13 +28,17 @@ spec:
           env:
             - name: SERVICE_PORT
               value: '3000'
+            - name: NSM_NETWORK_SERVICES
+              value: 'orders-service-ns'
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: orders-service
-  # namespace: orders-ns
+  namespace: orders-ns
+  annotations:
+    networkservicemesh.io/name: 'orders-service-ns'
 spec:
   selector:
     app: orders-service

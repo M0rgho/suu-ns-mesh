@@ -2,18 +2,36 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: restaurant-ns
+  labels:
+    name: restaurant-ns
+    nsm.networkservicemesh.io/forwarder: 'true'
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: orders-ns
+  labels:
+    name: orders-ns
+    nsm.networkservicemesh.io/forwarder: 'true'
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: delivery-ns
+  labels:
+    name: delivery-ns
+    nsm.networkservicemesh.io/forwarder: 'true'
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
   name: otel-ns
+  labels:
+    name: otel-ns
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nsm-system
+  labels:
+    name: nsm-system

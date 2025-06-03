@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: restaurant-service
-  # namespace: restaurant-ns
+  namespace: restaurant-ns
 spec:
   replicas: 1
   selector:
@@ -12,6 +12,9 @@ spec:
     metadata:
       labels:
         app: restaurant-service
+      annotations:
+        networkservicemesh.io/name: 'restaurant-service-ns'
+        networkservicemesh.io/clients: 'delivery-service-ns'
     spec:
       containers:
         - name: restaurant-service
@@ -25,13 +28,17 @@ spec:
           env:
             - name: SERVICE_PORT
               value: '3000'
+            - name: NSM_NETWORK_SERVICES
+              value: 'restaurant-service-ns'
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: restaurant-service
-  # namespace: restaurant-ns
+  namespace: restaurant-ns
+  annotations:
+    networkservicemesh.io/name: 'restaurant-service-ns'
 spec:
   selector:
     app: restaurant-service
